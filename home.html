@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="path/to/bootstrap.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="path/to/main.css" />
+  <!-- Chart.js -->
+  <script src="path/to/Chart.min.js"></script>
+
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f8fa;
+      padding: 20px;
+      color: #333;
+    }
+
+    .welcome-text {
+      color: #464646;
+      font-weight: bold;
+      font-size: 3rem;
+      border-bottom: 2px solid #464646;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+    }
+
+    #chart-container {
+      position: relative;
+      height: 45vh;
+      border: 2px solid #4e6570;
+      border-radius: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .btn-huge {
+      padding: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-huge:hover {
+      background-color: #218838;
+      transform: scale(1.05);
+    }
+
+    .content-section {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-heading {
+      color: #4e6570;
+      font-weight: bold;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #4e6570;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+    }
+
+    .entry {
+      padding: 15px 0;
+      border-bottom: 1px solid #d0d0d0;
+    }
+
+    .entry:last-child {
+      border-bottom: none;
+    }
+
+    .entry small {
+      color: #888;
+    }
+
+    .entry a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .entry a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .btn-huge {
+        font-size: 1.2rem;
+        padding: 15px;
+      }
+
+      #chart-container {
+        height: 40vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Welcome Section -->
+  <div class="welcome-text">
+    Welcome, Username
+  </div>
+
+  <!-- Chart Section -->
+  <div id="chart-container" class="table-bordered">
+    <canvas id="bar-graph"></canvas>
+  </div>
+
+  <!-- Buttons Section -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <a href="select-supplier.html" class="btn btn-success btn-lg btn-block btn-huge">New Incoming Stock</a>
+    </div>
+    <div class="col-md-6 mb-3">
+      <a href="new-sale.html" class="btn btn-success btn-lg btn-block btn-huge">New Outgoing Stock</a>
+    </div>
+  </div>
+
+  <!-- Recent Sales and Purchases Section -->
+  <div class="content-section">
+    <div class="row">
+      <!-- Recent Sales -->
+      <div class="col-md-6 mb-4">
+        <div class="section-heading">Recent Sales</div>
+
+        <div class="entry">
+          <div>Bill No: #1234<br>Purchased by <b>John Doe</b><br><small><i>2025-04-28</i></small></div>
+          <div class="mt-2">$150 <br><a href="sale-bill-1234.html">View Bill</a></div>
+        </div>
+
+        <div class="entry">
+          <div>Bill No: #1235<br>Purchased by <b>Jane Smith</b><br><small><i>2025-04-27</i></small></div>
+          <div class="mt-2">$200 <br><a href="sale-bill-1235.html">View Bill</a></div>
+        </div>
+      </div>
+
+      <!-- Recent Purchases -->
+      <div class="col-md-6 mb-4">
+        <div class="section-heading">Recent Purchases</div>
+
+        <div class="entry">
+          <div>Bill No: #5678<br>Purchased by <b>Supplier A</b><br><small><i>2025-04-26</i></small></div>
+          <div class="mt-2">$500 <br><a href="purchase-bill-5678.html">View Bill</a></div>
+        </div>
+
+        <div class="entry">
+          <div>Bill No: #5679<br>Purchased by <b>Supplier B</b><br><small><i>2025-04-25</i></small></div>
+          <div class="mt-2">$300 <br><a href="purchase-bill-5679.html">View Bill</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js Script -->
+  <script>
+    Chart.defaults.global.defaultFontColor = "#3c3c3c";
+
+    var barConfig = {
+      type: "bar",
+      data: {
+        datasets: [{
+          backgroundColor: "#1a79a5",
+          label: "Stock in Inventory",
+          data: [100, 200, 150, 75, 300],
+        }],
+        labels: ["Item A", "Item B", "Item C", "Item D", "Item E"],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    };
+
+    window.onload = function () {
+      var ctx = document.getElementById("bar-graph").getContext("2d");
+      window.BarStock = new Chart(ctx, barConfig);
+    };
+  </script>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="path/to/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

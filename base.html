@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/bootstrap/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/sidebar.css">
+    <link rel="stylesheet" href="static/css/dialogbox.css">
+</head>
+<style>
+  /* main.css */
+
+/* Reset some basic styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Wrapper for sidebar + content */
+#wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar style */
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #343a40;
+    color: #fff;
+    transition: all 0.3s;
+    overflow-y: auto;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #23272b;
+    text-align: center;
+}
+
+#sidebar .sidebar-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.sidebar-components {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.sidebar-components li {
+    padding: 10px 20px;
+}
+
+.sidebar-components li a {
+    color: #d1d1d1;
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+.sidebar-components li a:hover {
+    background: #495057;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+/* Submenu styles */
+.sidebar-subitem {
+    padding-left: 30px;
+    font-size: 14px;
+}
+
+/* Right arrow for dropdown */
+.right-arrow::after {
+    content: "\f105"; /* FontAwesome right arrow */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    float: right;
+}
+
+/* Active submenu open */
+.collapse.show {
+    background: #3d434a;
+}
+
+/* Bottom left user info */
+.bottomleft {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+/* Content style */
+#content {
+    width: 100%;
+    padding: 20px;
+    background-color: #e9ecef;
+    overflow-y: auto;
+}
+
+/* Navbar brand text */
+.titlefont {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+/* Sidebar button common */
+.sidebar-button {
+    cursor: pointer;
+}
+
+/* Sidebar paragraph (if needed) */
+.sidebar-paragraph {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #a1a1a1;
+}
+
+/* Responsive - sidebar toggle (optional future feature) */
+@media (max-width: 768px) {
+    #sidebar {
+        min-width: 200px;
+        max-width: 200px;
+    }
+}
+
+/* Dialog Box CSS */
+#dialogoverlay {
+    display: none;
+    opacity: 0.8;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+#dialogbox {
+    display: none;
+    position: fixed;
+    background: #fff;
+    width: 350px;
+    max-width: 80%;
+    z-index: 10;
+    border-radius: 8px;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#dialogboxhead {
+    background: #343a40;
+    padding: 10px;
+    color: #fff;
+    font-size: 18px;
+}
+
+#dialogboxbody {
+    padding: 20px;
+    color: #333;
+    font-size: 16px;
+}
+
+#dialogboxfoot {
+    padding: 10px;
+    text-align: right;
+}
+
+/* Dialog box buttons inside foot */
+#dialogboxfoot button {
+    background: #343a40;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#dialogboxfoot button:hover {
+    background: #495057;
+}
+
+</style>
+
+<body>
+
+    <!-- Dialog Box Overlay -->
+    <div id="dialogoverlay"></div>
+    <div id="dialogbox">
+        <div class="align-middle">
+            <div id="dialogboxhead"></div>
+            <div id="dialogboxbody"></div>
+            <div id="dialogboxfoot"></div>
+        </div>
+    </div>
+
+    <!-- Main Wrapper -->
+    <main id="wrapper">
+
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <a class="navbar-brand titlefont mr-4" href="index.html">
+                    <h3>IMS-Django</h3>
+                </a>
+            </div>
+
+            <ul class="list-unstyled sidebar-components">
+
+                <li>
+                    <a class="sidebar-text sidebar-button" href="index.html">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#inventorySubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button">
+                        <i class="fas fa-boxes"></i> Inventory
+                    </a>
+                    <ul class="collapse list-unstyled" id="inventorySubmenu">
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="add-new-inventory.html">
+                                <i class="fas fa-dot-circle"></i> Add New
+                            </a>
+                        </li>
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="inventory-list.html">
+                                <i class="fas fa-dot-circle"></i> Inventory List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#purchaseSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button">
+                        <i class="fas fa-cash-register"></i> Purchases
+                    </a>
+                    <ul class="collapse list-unstyled" id="purchaseSubmenu">
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="new-purchase.html">
+                                <i class="fas fa-dot-circle"></i> New Incoming Stock
+                            </a>
+                        </li>
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="purchases-list.html">
+                                <i class="fas fa-dot-circle"></i> Purchases List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#saleSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button">
+                        <i class="fas fa-dollar-sign"></i> Sales
+                    </a>
+                    <ul class="collapse list-unstyled" id="saleSubmenu">
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="new-sale.html">
+                                <i class="fas fa-dot-circle"></i> New Outgoing Stock
+                            </a>
+                        </li>
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="sales-orders.html">
+                                <i class="fas fa-dot-circle"></i> Sales Orders
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#supplierSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button">
+                        <i class="fas fa-dolly-flatbed"></i> Suppliers
+                    </a>
+                    <ul class="collapse list-unstyled" id="supplierSubmenu">
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="add-supplier.html">
+                                <i class="fas fa-dot-circle"></i> Add New Supplier
+                            </a>
+                        </li>
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="suppliers-list.html">
+                                <i class="fas fa-dot-circle"></i> Suppliers List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="sidebar-text sidebar-button" href="about.html">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </li>
+
+                <li class="bottomleft">
+                    <a href="#UserSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button">
+                        <i class="fas fa-user-circle"></i> Username
+                    </a>
+                    <ul class="collapse list-unstyled" id="UserSubmenu">
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="admin.html">
+                                <i class="fas fa-dot-circle"></i> Admin Page
+                            </a>
+                        </li>
+                        <li>
+                            <a class="sidebar-text sidebar-subitem sidebar-button" href="logout.html">
+                                <i class="fas fa-dot-circle"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Messages (Success/Error) will show here -->
+
+                    <div class="container">
+                        <!-- Main Page Content Here -->
+                        <h1>Welcome to Inventory Management System</h1>
+                        <p>This is the dashboard.</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="static/bootstrap/jquery-3.3.1.slim.min.js"></script>
+    <script src="static/bootstrap/popper.min.js"></script>
+    <script src="static/bootstrap/bootstrap.min.js"></script>
+
+</body>
+
+</html>

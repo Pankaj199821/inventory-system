@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMS - Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}" />
+
+    <!-- Custom CSS -->
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body Styling */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f8fa;
+        padding: 20px;
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* Header */
+      .main-heading {
+        color: #607d8b;
+        font-weight: bold;
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      /* Content Section */
+      .content-section {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      /* Form Buttons */
+      .btn-outline-success {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+      }
+
+      /* Link Buttons */
+      .ghost-blue,
+      .ghost-red {
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 10px;
+        transition: background-color 0.3s;
+      }
+
+      .ghost-blue {
+        background-color: #2196f3;
+      }
+
+      .ghost-blue:hover {
+        background-color: #1976d2;
+        text-decoration: none;
+      }
+
+      .ghost-red {
+        background-color: #f44336;
+      }
+
+      .ghost-red:hover {
+        background-color: #d32f2f;
+        text-decoration: none;
+      }
+
+      /* Responsive Centering */
+      .row.justify-content-center {
+        margin-top: 20px;
+      }
+
+      legend {
+        font-size: 1.8rem;
+        color: #494949;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main-heading">Inventory Management System</div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          {% if user.is_authenticated %}
+          <div class="text-center content-section">
+            <h2>You are already logged in, {{ request.user.username }}!</h2>
+            <div class="border-top pt-4 mt-4">
+              <a class="ghost-blue" href="{% url 'home' %}">Go Back Home</a
+              ><br /><br />
+              <a class="ghost-red" href="{% url 'logout' %}">Log Out</a>
+            </div>
+          </div>
+
+          {% else %}
+          <div class="content-section">
+            <form method="POST" action="">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                <legend>Please login to continue...</legend>
+                {{ form|crispy }}
+              </fieldset>
+              <div class="form-group text-center mt-4">
+                <button class="btn btn-outline-success btn-lg" type="submit">
+                  Log In
+                </button>
+              </div>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap and jQuery Scripts -->
+    <script src="{% static 'bootstrap/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+  </body>
+</html>
